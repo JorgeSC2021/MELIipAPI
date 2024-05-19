@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class ipResponseDTO {
 	private String myIP;
+	private String region;
 	private String idioma;
 	private String horaActual;
 	private Long distanciaBA;
@@ -34,6 +35,16 @@ public class ipResponseDTO {
 	public String getMyIP()
 	{
 		return myIP;
+	}
+	
+	public void setRegion(String pRegion)
+	{
+		this.region = pRegion;
+	}
+	
+	public String getRegion()
+	{
+		return region;
 	}
 	
 	public void setIdioma(String pIdioma)

@@ -12,9 +12,9 @@ import jakarta.annotation.PostConstruct;
 public class exchangeExService {
 
 	//variables de uso del api de Country
-	@Value("${api.Country.accessKey}")
+	@Value("${api.Exchange.accessKey}")
 	private String accessKeyExchange;
-	@Value("${api.Country.url}")
+	@Value("${api.Exchange.url}")
 	private String urlExchange;
 	
 	public Map<String, Object> exchangeInfoApi()

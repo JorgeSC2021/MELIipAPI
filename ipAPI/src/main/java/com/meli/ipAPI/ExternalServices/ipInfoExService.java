@@ -6,8 +6,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.meli.ipAPI.DTO.ipResponseServiceDTO;
 
-import jakarta.annotation.PostConstruct;
-
 @Service
 public class ipInfoExService {
 	
