@@ -6,17 +6,17 @@ import java.util.Date;
 public class ipResponseDTO {
 	private String myIP;
 	private String idioma;
-	private Date horaActual;
+	private String horaActual;
 	private Long distanciaBA;
 	private String monedaLocal;
-	private BigDecimal cotizacionUSD;
+	private Double cotizacionUSD;
 	
 	public ipResponseDTO()
 	{
 		
 	}
 	
-	public ipResponseDTO(String pMyIP, String pIdioma, Date pHoraActual, Long pDistanciaBA, String pMonedaLocal, BigDecimal pCotizacionUSD)
+	public ipResponseDTO(String pMyIP, String pIdioma, String pHoraActual, Long pDistanciaBA, String pMonedaLocal, Double pCotizacionUSD)
 	{
 		this.myIP = pMyIP;
 		this.idioma = pIdioma;
@@ -46,12 +46,12 @@ public class ipResponseDTO {
 		return idioma;
 	}
 	
-	public void setHoraActual(Date pHoraActual)
+	public void setHoraActual(String pHoraActual)
 	{
 		this.horaActual = pHoraActual;
 	}
 	
-	public Date getHoraActual()
+	public String getHoraActual()
 	{
 		return horaActual;
 	}
@@ -76,12 +76,12 @@ public class ipResponseDTO {
 		return monedaLocal;
 	}
 	
-	public void setCotizacionUSD(BigDecimal pCotizacionUSD)
+	public void setCotizacionUSD(Double pCotizacionUSD)
 	{
 		this.cotizacionUSD = pCotizacionUSD;
 	}
 	
-	public BigDecimal getCotizacionUSD()
+	public Double getCotizacionUSD()
 	{
 		return cotizacionUSD;
 	}
