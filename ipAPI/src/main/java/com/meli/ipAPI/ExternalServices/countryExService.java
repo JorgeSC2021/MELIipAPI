@@ -39,5 +39,21 @@ public class countryExService {
             throw new RuntimeException("Error al procesar la respuesta del servicio de país", e);
         }
 	}
+	
+	public List<countryResponseServiceDTO> capitalInfoApi(String pContryName)
+	{
+		String url = urlCountry + "capital/" + pContryName + "?access_key=" + accessKeyCountry;
+		RestTemplate countryApiService = new RestTemplate();
+        
+		try {
+            countryResponseServiceDTO[] response = countryApiService.getForObject(url, countryResponseServiceDTO[].class);
+            List<countryResponseServiceDTO> responseList = Arrays.asList(response);
+            return responseList;
+        } catch (HttpClientErrorException e) {
+            throw new RuntimeException("Error al llamar al servicio externo de país: " + e.getMessage(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al procesar la respuesta del servicio de país", e);
+        }
+	}
 
 }

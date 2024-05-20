@@ -8,7 +8,7 @@ public class ipResponseDTO {
 	private String region;
 	private String idioma;
 	private String horaActual;
-	private Long distanciaBA;
+	private Double distanciaBA;
 	private String monedaLocal;
 	private Double cotizacionUSD;
 	
@@ -17,7 +17,7 @@ public class ipResponseDTO {
 		
 	}
 	
-	public ipResponseDTO(String pMyIP, String pIdioma, String pHoraActual, Long pDistanciaBA, String pMonedaLocal, Double pCotizacionUSD)
+	public ipResponseDTO(String pMyIP, String pIdioma, String pHoraActual, Double pDistanciaBA, String pMonedaLocal, Double pCotizacionUSD)
 	{
 		this.myIP = pMyIP;
 		this.idioma = pIdioma;
@@ -67,12 +67,12 @@ public class ipResponseDTO {
 		return horaActual;
 	}
 	
-	public void setDistanciaBA(Long pDistanciaBA)
+	public void setDistanciaBA(Double pDistanciaBA)
 	{
 		this.distanciaBA = pDistanciaBA;
 	}
 	
-	public Long getDistanciaBA()
+	public Double getDistanciaBA()
 	{
 		return distanciaBA;
 	}
