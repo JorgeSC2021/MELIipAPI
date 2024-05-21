@@ -1,0 +1,84 @@
+{
+	"info": {
+		"_postman_id": "7609ca48-fea1-4e04-8f01-cece83c2c4be",
+		"name": "MELI Services IP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12264958",
+		"_collection_link": "https://martian-flare-889301.postman.co/workspace/GeolocalitationAPI~f865a174-bff3-4f06-b2af-28c14b8cd67b/collection/12264958-7609ca48-fea1-4e04-8f01-cece83c2c4be?action=share&source=collection_link&creator=12264958"
+	},
+	"item": [
+		{
+			"name": "Maxima Distancia",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/ipAPI/findCityMaxDistance",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"ipAPI",
+						"findCityMaxDistance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Minima Distancia",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/ipAPI/findCityMinDistance",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"ipAPI",
+						"findCityMinDistance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mostrar Información de IP",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/ipAPI/showIpInfo/190.24.77.143",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"ipAPI",
+						"showIpInfo",
+						"190.24.77.143"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AVG Distancia",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/ipAPI/AvgDistance",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"ipAPI",
+						"AvgDistance"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

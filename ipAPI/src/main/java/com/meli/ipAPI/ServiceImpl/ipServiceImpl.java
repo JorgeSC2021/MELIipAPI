@@ -3,14 +3,16 @@ package com.meli.ipAPI.ServiceImpl;
 import java.util.Map;
 import java.util.Optional;
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.context.annotation.Primary;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 
 import com.meli.ipAPI.DTO.*;
 import com.meli.ipAPI.IService.IipService;
@@ -24,7 +26,10 @@ import com.meli.ipAPI.Repository.ILocationRepository;
 @Primary
 @Service
 public class ipServiceImpl implements IipService{
-	
+
+    @Autowired
+    private EntityManager entityManager;
+    
 	private ipResponseDTO ipResponse = new ipResponseDTO();
 	
 	//Declaración de los servicios externos, se les coloca la declaracion "final" ya que internamente contiene variables anotadas, y su valor debe mantenerse
@@ -34,7 +39,6 @@ public class ipServiceImpl implements IipService{
     
 	private final ILocationRepository locationRepository;
 	
-	@Autowired
 	public ipServiceImpl(ipInfoExService ipinfoExService, countryExService countryExService, exchangeExService exchangeExService, ILocationRepository locationRepository)
 	{
 		this.ipinfoExService = ipinfoExService;
@@ -54,8 +58,10 @@ public class ipServiceImpl implements IipService{
 		//Obtengo los datos de las subclases
 		ipResponseServiceDTO.Location locationResponse = responseIpApiService.getLocation();
 		
-		//Traigo las coordinadas de Buenos aires
+		//Traigo las coordenadas de Buenos aires
 		List<countryResponseServiceDTO> responseBAService = countryExService.capitalInfoApi("Buenos Aires");
+		
+		//Calculo la distancia entre dos puntos
 		Double distance2points = getDistanceBetweenPointsNew(responseIpApiService.getLatitude(), responseIpApiService.getLongitude(),
 				                                             responseBAService.get(0).getLatlng().get(0), responseBAService.get(0).getLatlng().get(1),
 				                                             "kilometers");
@@ -80,27 +86,32 @@ public class ipServiceImpl implements IipService{
 		else
 			currencyIP = ratesValues.get(responseIpApiService.getCurrency().getCode());
 		
+		//Transformo la fecha del servicio para dejarla con hora
+		OffsetDateTime fechaHora = OffsetDateTime.parse(responseIpApiService.getTime_zone().getCurrent_time());
+		String horaActual = fechaHora.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+		
+		//Diligencio la variable de respuesta
 		ipResponse.setCotizacionUSD(currencyIP/ ratesValues.get("USD"));
 		ipResponse.setMyIP(responseIpApiService.getIp());
 		ipResponse.setRegion(responseCountryService.get(0).getRegion());
 		ipResponse.setDistanciaBA(distance2points);
 		ipResponse.setIdioma(languageList.get(0).getName());
 		ipResponse.setMonedaLocal(responseIpApiService.getCurrency().getName());
-		ipResponse.setHoraActual(responseIpApiService.getTime_zone().getCurrent_time());
+		ipResponse.setHoraActual(horaActual);
 		
+		//Almaceno el resultado para generar estadísticos
 		saveLocation(responseIpApiService, ipResponse.getDistanciaBA());
 		
 		return ipResponse;
 	}
 	
-	public cityMaxDistanceResponseDTO findCityMaxDistance()
+	public cityDistanceResponseDTO findCityMaxDistance()
 	{
-		Optional<Location> response = locationRepository.findCityMaxDistance(); 
-		
+		Optional<Location> response = locationRepository.findCityMaxDistance();
 		if(response.isPresent())
 		{
 			Location location = response.get();
-			return new cityMaxDistanceResponseDTO
+			return new cityDistanceResponseDTO
 					( 
 							location.getPais(), location.getCiudad(), location.getDistancia()
 					);
@@ -109,6 +120,39 @@ public class ipServiceImpl implements IipService{
 			return null;
 	}
 	
+	public cityDistanceResponseDTO findCityMinDistance()
+	{
+		Optional<Location> response = locationRepository.findCityMinDistance();
+		if(response.isPresent())
+		{
+			Location location = response.get();
+			return new cityDistanceResponseDTO
+					( 
+							location.getPais(), location.getCiudad(), location.getDistancia()
+					);
+		}
+		else
+			return null;
+	}
+	
+	public Double cityAvgDistance()
+	{
+		Query query = entityManager.createNamedQuery("Location.cityAvgDistanceQ");
+		
+		List<cityAvgResponseDTO> response = query.getResultList(); 
+		if(response.size()>0)
+		{
+			double suma = 0;
+			for(cityAvgResponseDTO city: response)
+			{
+				suma = suma + city.getPromedio();
+			}
+			
+			return suma / response.size();
+		}
+		
+		return null;
+	}
 	
 	//A partir de aquí se encuentran los métodos locales de la clase
 	static double getDistanceBetweenPointsNew(double latitude1, double longitude1, double latitude2, double longitude2, String unit) {

@@ -3,10 +3,9 @@ package com.meli.ipAPI.ExternalServices;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import jakarta.annotation.PostConstruct;
 
 @Service
 public class exchangeExService {
@@ -17,9 +16,9 @@ public class exchangeExService {
 	@Value("${api.Exchange.url}")
 	private String urlExchange;
 	
+	@Async
 	public Map<String, Object> exchangeInfoApi()
 	{
-		String accessKey = "88e6a3031d744857610ac4e43b429556";
 		String url = urlExchange + "latest?access_key=" + accessKeyExchange;
 		RestTemplate ipApiService = new RestTemplate();
 		

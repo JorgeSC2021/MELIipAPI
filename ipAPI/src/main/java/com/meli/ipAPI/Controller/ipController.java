@@ -1,7 +1,5 @@
 package com.meli.ipAPI.Controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,16 +24,42 @@ public class ipController {
 	{
 			ipResponseDTO ipResponse = ipService.showIpInfo(ipID);
 			if(ipResponse == null)
-				return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No se encontró información para la IP data");
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró información para la IP data");
 			
 			return ResponseEntity.ok(ipResponse);
 	}
 	
 	@GetMapping("/findCityMaxDistance")
-	public cityMaxDistanceResponseDTO findCityMaxDistance()
+	public ResponseEntity<?> findCityMaxDistance()
 	{
-		cityMaxDistanceResponseDTO response = ipService.findCityMaxDistance();
-		return response; 
+		cityDistanceResponseDTO response = ipService.findCityMaxDistance();
+		
+		if(response == null)
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se tienen datos de peticiones por el momento");
+		else
+			return ResponseEntity.ok(response); 
+	}
+	
+	@GetMapping("/findCityMinDistance")
+	public ResponseEntity<?> findCityMinDistance()
+	{
+		cityDistanceResponseDTO response = ipService.findCityMinDistance();
+		
+		if(response == null)
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se tienen datos de peticiones por el momento");
+		else
+			return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/AvgDistance")
+	public ResponseEntity<?> avgDistance()
+	{
+		Double response = ipService.cityAvgDistance();
+		
+		if(response == null)
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se tienen datos de peticiones por el momento para calcular el promedio");
+		else
+			return ResponseEntity.ok("Distancia promedio de todas las ejecuciones del servicio:  " + response.toString());
 	}
 	
 	@ExceptionHandler(Exception.class)

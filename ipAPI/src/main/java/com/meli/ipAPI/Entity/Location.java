@@ -2,12 +2,27 @@ package com.meli.ipAPI.Entity;
 
 import java.util.Date;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import com.meli.ipAPI.DTO.cityAvgResponseDTO;
 
 @Entity
+@Table(name = "Location")
+@SqlResultSetMapping(
+	    name = "cityAvgResponseDTOMapping",
+	    classes = @ConstructorResult(
+	        targetClass = cityAvgResponseDTO.class,
+	        columns = {
+	            @ColumnResult(name = "pais", type = String.class),
+	            @ColumnResult(name = "promedio", type = Double.class)
+	        }
+	    )
+	)
+@NamedNativeQuery(
+		name = "Location.cityAvgDistanceQ",
+		query = "SELECT l.pais AS pais, AVG(l.distancia) AS promedio FROM location l GROUP BY pais",
+		resultSetMapping = "cityAvgResponseDTOMapping"
+		)
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

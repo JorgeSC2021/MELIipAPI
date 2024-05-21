@@ -1,8 +1,5 @@
 package com.meli.ipAPI.DTO;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 public class ipResponseDTO {
 	private String myIP;
 	private String region;

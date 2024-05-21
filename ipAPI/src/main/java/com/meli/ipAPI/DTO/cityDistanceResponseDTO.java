@@ -1,16 +1,11 @@
 package com.meli.ipAPI.DTO;
 
-public class cityMaxDistanceResponseDTO {
+public class cityDistanceResponseDTO {
 	private String pais;
 	private String ciudad;
 	private Double distancia;
 	
-	public cityMaxDistanceResponseDTO()
-	{
-		
-	}
-	
-	public cityMaxDistanceResponseDTO(String pais, String ciudad, Double distancia)
+	public cityDistanceResponseDTO(String pais, String ciudad, Double distancia)
 	{
 		this.pais = pais;
 		this.ciudad = ciudad;
@@ -46,4 +41,5 @@ public class cityMaxDistanceResponseDTO {
 	{
 		this.distancia = distancia;
 	}
+
 }
